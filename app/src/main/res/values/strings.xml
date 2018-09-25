@@ -18,10 +18,11 @@
     <string name="blocked_members_list">Blocked members</string>
 
     <!-- login -->
-    <string name="login_user_id">User ID</string>
-    <string name="login_user_nickname">Nickname</string>
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
     <string name="login_connect">Connect</string>
     <string name="login_disconnect">Disconnect</string>
+    <string name="sign_up">Sign Up</string>
 
     <!-- Open Channel List -->
     <string name="open_channel_list_participant_count">%1$d participants</string>
