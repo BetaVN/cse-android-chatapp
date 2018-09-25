@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         mUsernameEditText.setText(PreferenceUtils.getUserId());
         mPasswordEditText.setText(PreferenceUtils.getNickname());
 
-        mLoginButton = (Button) findViewById(R.id.button_login_connect);
+        mLoginButton = (Button) findViewById(R.id.button_login);
         mSignUpButton = (Button) findViewById(R.id.button_redirect_signup);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,8 +52,10 @@ public class LoginActivity extends AppCompatActivity {
                 String password = mPasswordEditText.getText().toString();
 
                 PreferenceUtils.setUsername(username);
+                PreferenceUtils.setPassword(password);
 
                 // connectToSendBird(username, password);
+                loginToServer(username, password);
 
             }
         });
@@ -74,51 +76,95 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (PreferenceUtils.getConnected()) {
-            connectToSendBird(PreferenceUtils.getUserId(), PreferenceUtils.getNickname());
+            // connectToSendBird(PreferenceUtils.getUserId(), PreferenceUtils.getNickname());
+            loginToServer(PreferenceUtils.getUsername(), PreferenceUtils.getPassword());
         }
     }
 
-
-    private void connectToSendBird(final String username, final String password) {
+    private void loginToServer(String username, String password) {
         // Show the loading indicator
         showProgressBar(true);
         mLoginButton.setEnabled(false);
+        mSignUpButton.setEnabled(false);
 
-        ConnectionManager.login(username, new SendBird.ConnectHandler() {
-            @Override
-            public void onConnected(User user, SendBirdException e) {
-                // Callback received; hide the progress bar.
-                showProgressBar(false);
+        // TODO
+        ConnectionManager.login(username, password);
 
-                if (e != null) {
-                    // Error!
-                    Toast.makeText(
-                            LoginActivity.this, "" + e.getCode() + ": " + e.getMessage(),
-                            Toast.LENGTH_SHORT)
-                            .show();
+        showProgressBar(false);
 
-                    // Show login failure snackbar
-                    showSnackbar("Login to SendBird failed");
-                    mLoginButton.setEnabled(true);
-                    PreferenceUtils.setConnected(false);
-                    return;
-                }
+        // TODO
+        if (false) {
+            // Error
+            Toast.makeText(
+                    LoginActivity.this, "Error Message",
+                    Toast.LENGTH_SHORT)
+                    .show();
 
-                PreferenceUtils.setNickname(user.getNickname());
-                PreferenceUtils.setProfileUrl(user.getProfileUrl());
-                PreferenceUtils.setConnected(true);
+            // Show login failure snackbar
+            showSnackbar("Login failed");
+            mLoginButton.setEnabled(true);
+            mSignUpButton.setEnabled(true);
 
-                // Update the user's nickname
-                // updateCurrentUserInfo(password);
-                updateCurrentUserPushToken();
+            PreferenceUtils.setConnected(false);
+            return;
+        }
 
-                // Proceed to MainActivity
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+        // TODO
+        // Model User
+        // PreferenceUtils.setNickname(user.getNickname());
+        // PreferenceUtils.setProfileUrl(user.getProfileUrl());
+        PreferenceUtils.setConnected(true);
+
+        // Update the user's nickname
+        // updateCurrentUserInfo(password);
+        updateCurrentUserPushToken();
+
+        // Proceed to MainActivity
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
+
+    // private void connectToSendBird(final String username, final String password) {
+    //     // Show the loading indicator
+    //     showProgressBar(true);
+    //     mLoginButton.setEnabled(false);
+    //
+    //     ConnectionManager.login(username, new SendBird.ConnectHandler() {
+    //         @Override
+    //         public void onConnected(User user, SendBirdException e) {
+    //             // Callback received; hide the progress bar.
+    //             showProgressBar(false);
+    //
+    //             if (e != null) {
+    //                 // Error!
+    //                 Toast.makeText(
+    //                         LoginActivity.this, "" + e.getCode() + ": " + e.getMessage(),
+    //                         Toast.LENGTH_SHORT)
+    //                         .show();
+    //
+    //                 // Show login failure snackbar
+    //                 showSnackbar("Login to SendBird failed");
+    //                 mLoginButton.setEnabled(true);
+    //                 PreferenceUtils.setConnected(false);
+    //                 return;
+    //             }
+    //
+    //             PreferenceUtils.setNickname(user.getNickname());
+    //             PreferenceUtils.setProfileUrl(user.getProfileUrl());
+    //             PreferenceUtils.setConnected(true);
+    //
+    //             // Update the user's nickname
+    //             // updateCurrentUserInfo(password);
+    //             updateCurrentUserPushToken();
+    //
+    //             // Proceed to MainActivity
+    //             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+    //             startActivity(intent);
+    //             finish();
+    //         }
+    //     });
+    // }
 
     /**
      * Update the user's push token.
@@ -153,10 +199,10 @@ public class LoginActivity extends AppCompatActivity {
     //     });
     // }
 
+
     // Displays a Snackbar from the bottom of the screen
     private void showSnackbar(String text) {
         Snackbar snackbar = Snackbar.make(mLoginLayout, text, Snackbar.LENGTH_SHORT);
-
         snackbar.show();
     }
 

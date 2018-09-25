@@ -10,6 +10,7 @@ public class PreferenceUtils {
     private static final String PREFERENCE_KEY_PROFILE_URL = "profileUrl";
     private static final String PREFERENCE_KEY_CONNECTED = "connected";
     private static final String PREFERENCE_KEY_USERNAME = "username";
+    private static final String PREFERENCE_KEY_PASSWORD = "password";
 
     private static final String PREFERENCE_KEY_NOTIFICATIONS = "notifications";
     private static final String PREFERENCE_KEY_NOTIFICATIONS_SHOW_PREVIEWS = "notificationsShowPreviews";
@@ -32,14 +33,27 @@ public class PreferenceUtils {
         return mAppContext.getSharedPreferences("sendbird", Context.MODE_PRIVATE);
     }
 
-    public static void setUserId(String userId) {
-        SharedPreferences.Editor editor = getSharedPreferences().edit();
-        editor.putString(PREFERENCE_KEY_USER_ID, userId).apply();
-    }
-
     public static void setUsername(String username) {
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.putString(PREFERENCE_KEY_USERNAME, username).apply();
+    }
+
+    public static String getUsername() {
+        return getSharedPreferences().getString(PREFERENCE_KEY_USERNAME, "");
+    }
+
+    public static void setPassword(String password) {
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
+        editor.putString(PREFERENCE_KEY_PASSWORD, password).apply();
+    }
+
+    public static String getPassword() {
+        return getSharedPreferences().getString(PREFERENCE_KEY_PASSWORD, "");
+    }
+
+    public static void setUserId(String userId) {
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
+        editor.putString(PREFERENCE_KEY_USER_ID, userId).apply();
     }
 
     public static String getUserId() {

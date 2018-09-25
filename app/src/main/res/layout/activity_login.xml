@@ -69,8 +69,8 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/button_login_connect"
-            android:text="@string/login_connect"
+            android:id="@+id/button_login"
+            android:text="@string/login"
             style="@style/Widget.AppCompat.Button.Colored"
             app:theme="@style/AppTheme.ButtonStyle"
             android:layout_width="match_parent"

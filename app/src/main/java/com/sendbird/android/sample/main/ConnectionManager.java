@@ -9,15 +9,20 @@ import com.sendbird.android.sample.utils.PreferenceUtils;
 
 public class ConnectionManager {
 
-    public static void login(String userId, final SendBird.ConnectHandler handler) {
-        SendBird.connect(userId, new SendBird.ConnectHandler() {
-            @Override
-            public void onConnected(User user, SendBirdException e) {
-                if (handler != null) {
-                    handler.onConnected(user, e);
-                }
-            }
-        });
+    // public static void login(String userId, final SendBird.ConnectHandler handler) {
+    //     SendBird.connect(userId, new SendBird.ConnectHandler() {
+    //         @Override
+    //         public void onConnected(User user, SendBirdException e) {
+    //             if (handler != null) {
+    //                 handler.onConnected(user, e);
+    //             }
+    //         }
+    //     });
+    // }
+
+    public static void login(String username, String password) {
+        // TODO
+        return;
     }
 
     public static void logout(final SendBird.DisconnectHandler handler) {
