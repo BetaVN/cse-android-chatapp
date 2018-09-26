@@ -33,18 +33,11 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
-        mLoginLayout = findViewById(R.id.layout_login);
-
-        mUsernameEditText = findViewById(R.id.edittext_login_username);
-        mPasswordEditText = findViewById(R.id.edittext_login_password);
-
-        mForgetPasswordText = findViewById(R.id.text_forget_password);
+        initViews();
 
         mUsernameEditText.setText(PreferenceUtils.getUsername());
-        // mPasswordEditText.setText(PreferenceUtils.getPassword());
+        mPasswordEditText.setText(PreferenceUtils.getPassword());
 
-        mLoginButton = findViewById(R.id.button_login);
-        mSignUpButton = findViewById(R.id.button_redirect_signup);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +50,6 @@ public class LoginActivity extends AppCompatActivity {
                 PreferenceUtils.setUsername(username);
                 PreferenceUtils.setPassword(password);
 
-                // connectToSendBird(username, password);
                 loginToServer(username, password);
             }
         });
@@ -78,21 +70,28 @@ public class LoginActivity extends AppCompatActivity {
 
         mUsernameEditText.setSelectAllOnFocus(true);
         mPasswordEditText.setSelectAllOnFocus(true);
+    }
+
+    private void initViews() {
+        mLoginLayout = findViewById(R.id.layout_login);
+
+        mUsernameEditText = findViewById(R.id.edittext_login_username);
+        mPasswordEditText = findViewById(R.id.edittext_login_password);
+
+        mForgetPasswordText = findViewById(R.id.text_forget_password);
+
+        mLoginButton = findViewById(R.id.button_login);
+        mSignUpButton = findViewById(R.id.button_redirect_signup);
 
         // A loading indicator
-        mProgressBar = (ContentLoadingProgressBar) findViewById(R.id.progress_bar_login);
-
-        // Display current SendBird and app versions in a TextView
-        // String sdkVersion = String.format(getResources().getString(R.string.all_app_version),
-        //         BaseApplication.VERSION, SendBird.getSDKVersion());
-        // ((TextView) findViewById(R.id.text_login_versions)).setText(sdkVersion);
+        mProgressBar = findViewById(R.id.progress_bar_login);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        // Auto login when connection is live
         if (PreferenceUtils.getConnected()) {
-            // connectToSendBird(PreferenceUtils.getUserId(), PreferenceUtils.getNickname());
             loginToServer(PreferenceUtils.getUsername(), PreferenceUtils.getPassword());
         }
     }
@@ -100,14 +99,15 @@ public class LoginActivity extends AppCompatActivity {
     private void loginToServer(String username, String password) {
         // Show the loading indicator
         showProgressBar(true);
+
         mLoginButton.setEnabled(false);
         mSignUpButton.setEnabled(false);
 
         // TODO
         ConnectionManager.login(username, password);
 
+        // Hide the loading indicator
         showProgressBar(false);
-
         // TODO
         if (false) {
             // Error
@@ -130,11 +130,10 @@ public class LoginActivity extends AppCompatActivity {
 
         // Update the user's nickname
         // updateCurrentUserInfo(password);
-        updateCurrentUserPushToken();
+        // updateCurrentUserPushToken();
 
         // Proceed to MainActivity
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
     }
 
@@ -179,52 +178,22 @@ public class LoginActivity extends AppCompatActivity {
     //     });
     // }
 
-    /**
-     * Update the user's push token.
-     */
-    private void updateCurrentUserPushToken() {
-        PushUtils.registerPushTokenForCurrentUser(LoginActivity.this, null);
-    }
-
     // /**
-    //  * Updates the user's nickname.
-    //  * @param userNickname  The new nickname of the user.
+    //  * Update the user's push token.
     //  */
-    // private void updateCurrentUserInfo(final String userNickname) {
-    //     SendBird.updateCurrentUserInfo(userNickname, null, new SendBird.UserInfoUpdateHandler() {
-    //         @Override
-    //         public void onUpdated(SendBirdException e) {
-    //             if (e != null) {
-    //                 // Error!
-    //                 Toast.makeText(
-    //                         LoginActivity.this, "" + e.getCode() + ":" + e.getMessage(),
-    //                         Toast.LENGTH_SHORT)
-    //                         .show();
-    //
-    //                 // Show update failed snackbar
-    //                 showSnackbar("Update user nickname failed");
-    //
-    //                 return;
-    //             }
-    //
-    //             PreferenceUtils.setNickname(userNickname);
-    //         }
-    //     });
+    // private void updateCurrentUserPushToken() {
+    //     PushUtils.registerPushTokenForCurrentUser(LoginActivity.this, null);
     // }
 
 
     // Displays a Snackbar from the bottom of the screen
     private void showSnackbar(String text) {
-        Snackbar snackbar = Snackbar.make(mLoginLayout, text, Snackbar.LENGTH_SHORT);
-        snackbar.show();
+        Snackbar.make(mLoginLayout, text, Snackbar.LENGTH_SHORT).show();
     }
 
     // Shows or hides the ProgressBar
     private void showProgressBar(boolean show) {
-        if (show) {
-            mProgressBar.show();
-        } else {
-            mProgressBar.hide();
-        }
+        if (show) mProgressBar.show();
+        else mProgressBar.hide();
     }
 }

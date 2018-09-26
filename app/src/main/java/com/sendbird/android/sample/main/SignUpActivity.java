@@ -26,18 +26,10 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        mSignUpLayout = (CoordinatorLayout) findViewById(R.id.layout_sign_up);
+        initViews();
 
-        mUsernameEditText = (TextInputEditText) findViewById(R.id.edittext_signup_username);
-        mEmailEditText = (TextInputEditText) findViewById(R.id.edittext_signup_email);
-        mPasswordEditText = (TextInputEditText) findViewById(R.id.edittext_signup_password);
-        mConfirmPasswordEditText = (TextInputEditText) findViewById(R.id.edittext_signup_confirm_password);
-
-        mUsernameEditText.setText(PreferenceUtils.getUserId());
-        mPasswordEditText.setText(PreferenceUtils.getNickname());
-
-        mLoginButton = (Button) findViewById(R.id.button_redirect_login);
-        mSignUpButton = (Button) findViewById(R.id.button_signup);
+        mUsernameEditText.setText(PreferenceUtils.getUsername());
+        mEmailEditText.setText(PreferenceUtils.getEmail());
 
         mSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,10 +42,13 @@ public class SignUpActivity extends AppCompatActivity {
                 // Remove all spaces from userID
                 username = username.replaceAll("\\s", "");
 
+                PreferenceUtils.setUsername(username);
+                PreferenceUtils.setPassword(password);
+                PreferenceUtils.setEmail(email);
+
                 if (password.equals(confirmPassword)) {
                     signUpToServer(username, email, password);
-                }
-                else {
+                } else {
                     showSnackbar("Confirm password is not match");
                 }
             }
@@ -70,20 +65,36 @@ public class SignUpActivity extends AppCompatActivity {
         mEmailEditText.setSelectAllOnFocus(true);
         mPasswordEditText.setSelectAllOnFocus(true);
         mConfirmPasswordEditText.setSelectAllOnFocus(true);
+    }
+
+    private void initViews() {
+        mSignUpLayout = findViewById(R.id.layout_sign_up);
+
+        mUsernameEditText = findViewById(R.id.edittext_signup_username);
+        mEmailEditText = findViewById(R.id.edittext_signup_email);
+        mPasswordEditText = findViewById(R.id.edittext_signup_password);
+        mConfirmPasswordEditText = findViewById(R.id.edittext_signup_confirm_password);
+
+        mLoginButton = (Button) findViewById(R.id.button_redirect_login);
+        mSignUpButton = (Button) findViewById(R.id.button_signup);
 
         // A loading indicator
-        mProgressBar = (ContentLoadingProgressBar) findViewById(R.id.progress_bar_signup);
+        mProgressBar = findViewById(R.id.progress_bar_signup);
     }
 
     private void signUpToServer(String username, String email, String password) {
         // Show the loading indicator
         showProgressBar(true);
+
         mLoginButton.setEnabled(false);
         mSignUpButton.setEnabled(false);
 
         // TODO
         ConnectionManager.signUp(username, email, password);
 
+        mUsernameEditText.setText(PreferenceUtils.getUsername());
+
+        // Hide the loading indicator
         showProgressBar(false);
 
         // TODO
@@ -109,23 +120,18 @@ public class SignUpActivity extends AppCompatActivity {
         // updateCurrentUserPushToken();
 
         // Proceed to MainActivity
-        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(SignUpActivity.this, MainActivity.class));
         finish();
     }
 
     // Displays a Snackbar from the bottom of the screen
     private void showSnackbar(String text) {
-        Snackbar snackbar = Snackbar.make(mSignUpLayout, text, Snackbar.LENGTH_SHORT);
-        snackbar.show();
+        Snackbar.make(mSignUpLayout, text, Snackbar.LENGTH_SHORT).show();
     }
 
     // Shows or hides the ProgressBar
     private void showProgressBar(boolean show) {
-        if (show) {
-            mProgressBar.show();
-        } else {
-            mProgressBar.hide();
-        }
+        if (show) mProgressBar.show();
+        else mProgressBar.hide();
     }
 }

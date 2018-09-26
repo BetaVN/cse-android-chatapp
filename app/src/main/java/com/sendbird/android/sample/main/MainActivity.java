@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Unregister push tokens and disconnect
-                disconnect();
+                disconnect(PreferenceUtils.getUsername());
             }
         });
     }
@@ -57,30 +57,35 @@ public class MainActivity extends AppCompatActivity {
      * Unregisters all push tokens for the current user so that they do not receive any notifications,
      * then disconnects from SendBird.
      */
-    private void disconnect() {
-        SendBird.unregisterPushTokenAllForCurrentUser(new SendBird.UnregisterPushTokenHandler() {
-            @Override
-            public void onUnregistered(SendBirdException e) {
-                if (e != null) {
-                    // Error!
-                    e.printStackTrace();
+    private void disconnect(String username) {
+        // TODO
+        ConnectionManager.logout(username);
+        PreferenceUtils.setConnected(false);
+        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
 
-                    // Don't return because we still need to disconnect.
-                } else {
-//                    Toast.makeText(MainActivity.this, "All push tokens unregistered.", Toast.LENGTH_SHORT).show();
-                }
-
-                ConnectionManager.logout(new SendBird.DisconnectHandler() {
-                    @Override
-                    public void onDisconnected() {
-                        PreferenceUtils.setConnected(false);
-                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
-            }
-        });
+//         SendBird.unregisterPushTokenAllForCurrentUser(new SendBird.UnregisterPushTokenHandler() {
+//             @Override
+//             public void onUnregistered(SendBirdException e) {
+//                 if (e != null) {
+//                     // Error!
+//                     e.printStackTrace();
+//
+//                     // Don't return because we still need to disconnect.
+//                 } else {
+// //                    Toast.makeText(MainActivity.this, "All push tokens unregistered.", Toast.LENGTH_SHORT).show();
+//                 }
+//
+//                 ConnectionManager.logout(new SendBird.DisconnectHandler() {
+//                     @Override
+//                     public void onDisconnected() {
+//                         PreferenceUtils.setConnected(false);
+//                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+//                         startActivity(intent);
+//                         finish();
+//                     }
+//                 });
+//             }
+//         });
     }
 
     @Override
@@ -93,8 +98,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_main:
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 return true;
         }
         return false;

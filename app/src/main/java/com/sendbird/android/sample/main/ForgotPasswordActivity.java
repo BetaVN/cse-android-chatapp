@@ -26,14 +26,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
-        mForgotPasswordLayout = findViewById(R.id.layout_forgot_password);
-
-        mUsernameEditText = findViewById(R.id.edittext_forgot_password_username);
+        initViews();
 
         mUsernameEditText.setText(PreferenceUtils.getUsername());
 
-        mLoginButton = findViewById(R.id.button_forgot_password_redirect_login);
-        mForgotPasswordButton = findViewById(R.id.button_submit_forgot_password);
         mForgotPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +51,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         });
 
         mUsernameEditText.setSelectAllOnFocus(true);
+    }
 
+    private void initViews() {
+        mForgotPasswordLayout = findViewById(R.id.layout_forgot_password);
+        mUsernameEditText = findViewById(R.id.edittext_forgot_password_username);
+        mLoginButton = findViewById(R.id.button_forgot_password_redirect_login);
+        mForgotPasswordButton = findViewById(R.id.button_submit_forgot_password);
         // A loading indicator
         mProgressBar = (ContentLoadingProgressBar) findViewById(R.id.progress_bar_forgot_password);
     }
@@ -63,12 +65,14 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private void submitResetPasswordToServer(String username) {
         // Show the loading indicator
         showProgressBar(true);
+
         mLoginButton.setEnabled(false);
         mForgotPasswordButton.setEnabled(false);
 
         // TODO
         ConnectionManager.forgotPassword(username);
 
+        // Hide the loading indicator
         showProgressBar(false);
 
         // TODO
@@ -93,16 +97,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     // Displays a Snackbar from the bottom of the screen
     private void showSnackbar(String text) {
-        Snackbar snackbar = Snackbar.make(mForgotPasswordLayout, text, Snackbar.LENGTH_SHORT);
-        snackbar.show();
+        Snackbar.make(mForgotPasswordLayout, text, Snackbar.LENGTH_SHORT).show();
     }
 
     // Shows or hides the ProgressBar
     private void showProgressBar(boolean show) {
-        if (show) {
-            mProgressBar.show();
-        } else {
-            mProgressBar.hide();
-        }
+        if (show) mProgressBar.show();
+        else mProgressBar.hide();
     }
 }

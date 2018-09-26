@@ -35,16 +35,21 @@ public class ConnectionManager {
         return;
     }
 
-    public static void logout(final SendBird.DisconnectHandler handler) {
-        SendBird.disconnect(new SendBird.DisconnectHandler() {
-            @Override
-            public void onDisconnected() {
-                if (handler != null) {
-                    handler.onDisconnected();
-                }
-            }
-        });
+    public static void logout(String username) {
+        // TODO
+        return;
     }
+
+    // public static void logout(final SendBird.DisconnectHandler handler) {
+    //     SendBird.disconnect(new SendBird.DisconnectHandler() {
+    //         @Override
+    //         public void onDisconnected() {
+    //             if (handler != null) {
+    //                 handler.onDisconnected();
+    //             }
+    //         }
+    //     });
+    // }
 
     public static void addConnectionManagementHandler(String handlerId, final ConnectionManagementHandler handler) {
         SendBird.addConnectionHandler(handlerId, new SendBird.ConnectionHandler() {
