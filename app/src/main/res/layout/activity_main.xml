@@ -118,17 +118,6 @@
             android:background="@drawable/selector_btn_white">
         </android.support.v7.widget.AppCompatButton>
 
-        <TextView
-            android:id="@+id/text_main_versions"
-            android:text="@string/all_app_version"
-            android:textSize="12sp"
-            android:textColor="#a0a0a0"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"/>
-
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
