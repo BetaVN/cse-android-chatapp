@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.sendbird.android.sample">
 
+    <uses-sdk tools:overrideLibrary="com.stfalcon.multiimageview" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <uses-sdk tools:overrideLibrary="com.stfalcon.multiimageview"/> <!-- min 16 -->
-
+    <!-- min 16 -->
     <application
         android:name=".main.BaseApplication"
         android:allowBackup="true"
@@ -23,15 +24,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main.MainActivity"
-            android:label="@string/select_channel_type"/>
+        <activity
+            android:name=".main.MainActivity"
+            android:label="@string/select_channel_type" />
         <activity
             android:name=".main.SettingsActivity"
             android:label="@string/settings" />
         <activity
             android:name=".main.BlockedMembersListActivity"
             android:label="@string/blocked_members_list" />
-
         <activity android:name=".utils.PhotoViewerActivity" />
         <activity
             android:name=".utils.MediaPlayerActivity"
@@ -55,9 +56,11 @@
         <activity
             android:name=".openchannel.ParticipantListActivity"
             android:label="@string/participant_list" />
-        <activity android:name=".openchannel.OpenChannelActivity"
+        <activity
+            android:name=".openchannel.OpenChannelActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".groupchannel.GroupChannelActivity"
+        <activity
+            android:name=".groupchannel.GroupChannelActivity"
             android:windowSoftInputMode="stateHidden" />
 
         <service android:name=".fcm.MyFirebaseMessagingService">
@@ -71,6 +74,8 @@
             </intent-filter>
         </service>
 
+        <activity android:name=".main.SignUpActivity" />
+        <activity android:name=".main.ForgotPasswordActivity"></activity>
     </application>
 
 </manifest>

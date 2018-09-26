@@ -17,9 +17,6 @@
     <string name="settings">Settings</string>
     <string name="blocked_members_list">Blocked members</string>
 
-    <!-- login -->
-    <string name="login_username">Username</string>
-    <string name="login_password">Password</string>
     <string name="login">Login</string>
     <string name="login_disconnect">Disconnect</string>
     <string name="sign_up">Sign Up</string>
@@ -54,5 +51,12 @@
     <!-- Message Status -->
     <string name="message_sending">Sending</string>
     <string name="message_failed">Failed</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="reset_password">Reset password</string>
 
 </resources>

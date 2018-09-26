@@ -25,6 +25,16 @@ public class ConnectionManager {
         return;
     }
 
+    public static void signUp(String username, String email, String password) {
+        // TODO
+        return;
+    }
+
+    public static void forgotPassword(String username) {
+        // TODO
+        return;
+    }
+
     public static void logout(final SendBird.DisconnectHandler handler) {
         SendBird.disconnect(new SendBird.DisconnectHandler() {
             @Override

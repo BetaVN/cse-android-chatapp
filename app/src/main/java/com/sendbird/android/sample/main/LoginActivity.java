@@ -9,6 +9,7 @@ import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sendbird.android.SendBird;
@@ -24,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText mUsernameEditText, mPasswordEditText;
     private Button mLoginButton, mSignUpButton;
     private ContentLoadingProgressBar mProgressBar;
-
+    private TextView mForgetPasswordText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,31 +33,46 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
-        mLoginLayout = (CoordinatorLayout) findViewById(R.id.layout_login);
+        mLoginLayout = findViewById(R.id.layout_login);
 
-        mUsernameEditText = (TextInputEditText) findViewById(R.id.edittext_login_username);
-        mPasswordEditText = (TextInputEditText) findViewById(R.id.edittext_login_password);
+        mUsernameEditText = findViewById(R.id.edittext_login_username);
+        mPasswordEditText = findViewById(R.id.edittext_login_password);
 
-        mUsernameEditText.setText(PreferenceUtils.getUserId());
-        mPasswordEditText.setText(PreferenceUtils.getNickname());
+        mForgetPasswordText = findViewById(R.id.text_forget_password);
 
-        mLoginButton = (Button) findViewById(R.id.button_login);
-        mSignUpButton = (Button) findViewById(R.id.button_redirect_signup);
+        mUsernameEditText.setText(PreferenceUtils.getUsername());
+        // mPasswordEditText.setText(PreferenceUtils.getPassword());
+
+        mLoginButton = findViewById(R.id.button_login);
+        mSignUpButton = findViewById(R.id.button_redirect_signup);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String username = mUsernameEditText.getText().toString();
+                String password = mPasswordEditText.getText().toString();
+
                 // Remove all spaces from userID
                 username = username.replaceAll("\\s", "");
-
-                String password = mPasswordEditText.getText().toString();
 
                 PreferenceUtils.setUsername(username);
                 PreferenceUtils.setPassword(password);
 
                 // connectToSendBird(username, password);
                 loginToServer(username, password);
+            }
+        });
 
+        mSignUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+            }
+        });
+
+        mForgetPasswordText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
             }
         });
 
@@ -95,10 +111,7 @@ public class LoginActivity extends AppCompatActivity {
         // TODO
         if (false) {
             // Error
-            Toast.makeText(
-                    LoginActivity.this, "Error Message",
-                    Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(LoginActivity.this, "Error Message", Toast.LENGTH_SHORT).show();
 
             // Show login failure snackbar
             showSnackbar("Login failed");
